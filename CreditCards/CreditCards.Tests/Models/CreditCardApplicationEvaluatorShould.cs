@@ -1,4 +1,6 @@
-﻿using CreditCards.Core.Models;
+﻿using CreditCards.Core.Interfaces;
+using CreditCards.Core.Models;
+using Moq;
 using Xunit;
 
 namespace CreditCards.Tests.Models
@@ -95,6 +97,20 @@ namespace CreditCards.Tests.Models
             {
                 FrequentFlyerNumber = "0dm389dn29"
             };
+
+            Assert.Equal(CreditCardApplicationDecision.ReferredToHuman, sut.Evaluate(application));
+        }
+
+        [Fact]
+        public void ReferInvalidFrequentFlyerNumbers_MockValidator()
+        {
+            var mockValidator = new Mock<IFrequentFlyerNumberValidator>();
+            mockValidator.Setup(x => x.IsValid(It.IsAny<string>())).Returns(false);
+
+            // sut => System Under Test
+            var sut = new CreditCardApplicationEvaluator(mockValidator.Object);
+
+            var application = new CreditCardApplication();
 
             Assert.Equal(CreditCardApplicationDecision.ReferredToHuman, sut.Evaluate(application));
         }
