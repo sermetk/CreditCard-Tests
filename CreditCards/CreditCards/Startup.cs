@@ -43,6 +43,7 @@ namespace CreditCards
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                //app.UseBrowserLink();
 
                 var dbContext = serviceProvider.GetService<AppDbContext>();
                 dbContext.Database.EnsureCreated();
