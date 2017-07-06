@@ -24,22 +24,27 @@ namespace CreditCards
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<AppDbContext>(
-                options => options.UseSqlServer(_configuration.GetConnectionString("DefaultConnectionString")));
+                options => options.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));
 
             services.AddScoped<ICreditCardApplicationRepository, EntityFrameworkCreditCardApplicationRepository>();
 
             services.AddMvc();
+
+            // Build the intermediate service provider then return it
+            return services.BuildServiceProvider();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, AppDbContext dbContext)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+
+                var dbContext = serviceProvider.GetService<AppDbContext>();
                 dbContext.Database.EnsureCreated();
             }
             else
