@@ -89,5 +89,24 @@ namespace CreditCards.Tests.Controllers
             Assert.Equal(application.FrequentFlyerNumber, savedApplication.FrequentFlyerNumber);
             Assert.Equal(application.GrossAnnualIncome, savedApplication.GrossAnnualIncome);
         }
+
+        [Fact]
+        public async Task ReturnApplicationCompleteWhenValidModel()
+        {
+            var application = new NewCreditCardApplicationDetails
+            {
+                FirstName = "Sarah",
+                LastName = "Smith",
+                Age = 18,
+                FrequentFlyerNumber = "012345-A",
+                GrossAnnualIncome = 100_000
+            };
+
+            var result = await _sut.Index(application);
+
+            var viewResult = Assert.IsType<ViewResult>(result);
+
+            Assert.Equal("ApplicationComplete", viewResult.ViewName);
+        }
     }
 }
