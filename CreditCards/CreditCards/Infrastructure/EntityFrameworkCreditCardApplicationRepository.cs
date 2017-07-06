@@ -1,8 +1,5 @@
 ﻿using CreditCards.Core.Interfaces;
 using CreditCards.Core.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace CreditCards.Infrastructure
