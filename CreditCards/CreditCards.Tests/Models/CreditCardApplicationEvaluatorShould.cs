@@ -15,7 +15,7 @@ namespace CreditCards.Tests.Models
         public void AcceptAllHightIncomeApplications(int income)
         {
             // sut => System Under Test
-            var sut = new CreditCardApplicationEvaluator();
+            var sut = new CreditCardApplicationEvaluator(new FrequentFlyerNumberValidator());
 
             var application = new CreditCardApplication
             {
@@ -33,7 +33,7 @@ namespace CreditCards.Tests.Models
         public void ReferYoungApplicantsWhoAreNotHightIncome(int age)
         {
             // sut => System Under Test
-            var sut = new CreditCardApplicationEvaluator();
+            var sut = new CreditCardApplicationEvaluator(new FrequentFlyerNumberValidator());
 
             var application = new CreditCardApplication
             {
@@ -51,7 +51,7 @@ namespace CreditCards.Tests.Models
         public void ReferNonYoungApplicantsWhoAreMiddleIncome(int income)
         {
             // sut => System Under Test
-            var sut = new CreditCardApplicationEvaluator();
+            var sut = new CreditCardApplicationEvaluator(new FrequentFlyerNumberValidator());
 
             var application = new CreditCardApplication
             {
@@ -69,7 +69,7 @@ namespace CreditCards.Tests.Models
         public void DeclineAllApplicantsWhoAreLowIncome(int income)
         {
             // sut => System Under Test
-            var sut = new CreditCardApplicationEvaluator();
+            var sut = new CreditCardApplicationEvaluator(new FrequentFlyerNumberValidator());
 
             var application = new CreditCardApplication
             {

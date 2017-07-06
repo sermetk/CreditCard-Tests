@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CreditCards.Core.Interfaces;
+using System;
 using System.Globalization;
 using System.Linq;
 
@@ -10,7 +11,7 @@ namespace CreditCards.Core.Models
     /// Member numbers consist of 6 numeric digits
     /// Scheme identifier are a single uppercase alphabetic character
     /// </summary>
-    public class FrequentFlyerNumberValidator
+    public class FrequentFlyerNumberValidator : IFrequentFlyerNumberValidator
     {
         private readonly char[] _validSchemeIdentifier = { 'A', 'Q', 'Y' };
         private const int _expectedTotalLength = 8;
