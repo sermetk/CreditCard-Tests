@@ -1,7 +1,9 @@
 ﻿using CreditCards.Controllers;
 using CreditCards.Core.Interfaces;
+using CreditCards.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace CreditCards.Tests.Controllers
@@ -24,6 +26,25 @@ namespace CreditCards.Tests.Controllers
             var result = _sut.Index();
 
             Assert.IsType<ViewResult>(result);
+        }
+
+        [Fact]
+        public async Task ReturnViewWhenInvalidModelState()
+        {
+            _sut.ModelState.AddModelError("x", "Test Error");
+
+            var application = new NewCreditCardApplicationDetails
+            {
+                FirstName = "Sarah"
+            };
+
+            var result = await _sut.Index(application);
+
+            var viewResult = Assert.IsType<ViewResult>(result);
+
+            var model = Assert.IsType<NewCreditCardApplicationDetails>(viewResult.Model);
+
+            Assert.Equal(application.FirstName, model.FirstName);
         }
     }
 }
