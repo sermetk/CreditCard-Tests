@@ -20,7 +20,7 @@ namespace CreditCards.Core.Models
 
         public bool IsValid(string frequentFlyerNumber)
         {
-            if (string.IsNullOrWhiteSpace(frequentFlyerNumber))
+            if (frequentFlyerNumber == null)
                 throw new ArgumentNullException(nameof(frequentFlyerNumber));
 
             if (frequentFlyerNumber.Length != _expectedTotalLength)
