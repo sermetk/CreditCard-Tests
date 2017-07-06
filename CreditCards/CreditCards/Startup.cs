@@ -13,7 +13,7 @@ namespace CreditCards
     {
         private IConfiguration _configuration;
 
-        public Startup(IConfiguration configuration, IHostingEnvironment env)
+        public Startup(IConfiguration configuration)
         {
             _configuration = configuration;
         }
