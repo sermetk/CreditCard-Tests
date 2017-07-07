@@ -11,6 +11,8 @@ namespace CreditCards.Integration.Test
         [Fact]
         public async Task RenderApplicationFormAsync()
         {
+            // https://github.com/aspnet/Hosting/issues/959#issuecomment-286351703
+            // Fix problem with 500 errors when running the test server
             var builder = new WebHostBuilder()
                 .UseContentRoot(@"C:\Users\MIhsan\Documents\GitHub\CreditCard-Tests\CreditCards\CreditCards")
                 .ConfigureAppConfiguration((hostingContext, config) =>  
