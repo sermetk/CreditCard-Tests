@@ -1,8 +1,6 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using System;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -24,12 +22,6 @@ namespace CreditCards.Integration.Test
                         .AddEnvironmentVariables();
                 })
                 .UseEnvironment("Development")
-                .ConfigureLogging((hostingContext, logging) => 
-                {
-                    logging.UseConfiguration(hostingContext.Configuration.GetSection("Logging"));
-                    logging.AddConsole();
-                    logging.AddDebug();
-                })
                 .UseStartup<Startup>();
             //.UseApplicationInsights()
 
