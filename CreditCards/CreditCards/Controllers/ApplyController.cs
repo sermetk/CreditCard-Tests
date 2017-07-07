@@ -38,6 +38,10 @@ namespace CreditCards.Controllers
                 GrossAnnualIncome = applicationDetails.GrossAnnualIncome.Value
             };
 
+            // Not mock-able
+            var evaluator = new CreditCardApplicationEvaluator(new FrequentFlyerNumberValidator());
+            creditCardApplication.Decision = evaluator.Evaluate(creditCardApplication);
+
             await _applicationRepository.AddAsync(creditCardApplication);
 
             return View("ApplicationComplete", creditCardApplication);
