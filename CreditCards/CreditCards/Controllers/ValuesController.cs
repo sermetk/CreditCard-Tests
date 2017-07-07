@@ -21,6 +21,7 @@ namespace CreditCards.Controllers
             return Content($"Value {id}");
         }
 
+        [HttpPost("startJob")]
         public IActionResult StartJob()
         {
             return Ok("Batch Job Started");
