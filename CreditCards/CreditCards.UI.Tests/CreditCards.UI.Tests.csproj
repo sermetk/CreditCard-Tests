@@ -63,6 +63,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CreditCardApplicationTests.cs" />
+    <Compile Include="PageObjectModels\ApplicationPage.cs" />
+    <Compile Include="PageObjectModels\ApplicationCompletePage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

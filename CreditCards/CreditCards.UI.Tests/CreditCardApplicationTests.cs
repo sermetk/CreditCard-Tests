@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using CreditCards.UI.Tests.PageObjectModels;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System;
 using Xunit;
@@ -8,10 +9,14 @@ namespace CreditCards.UI.Tests
     public class CreditCardApplicationTests : IDisposable
     {
         private readonly IWebDriver _driver;
+        private ApplicationPage _applicationPage;
 
         public CreditCardApplicationTests()
         {
             _driver = new ChromeDriver();
+            _driver.Navigate().GoToUrl("http://localhost:64559/");
+            _applicationPage = new ApplicationPage(_driver);
+            _applicationPage.NavigateTo();
         }
 
         public void Dispose()
@@ -23,44 +28,34 @@ namespace CreditCards.UI.Tests
         [Fact]
         public void ShouldLoadApplicationPage_SmokeTest()
         {
-            _driver.Navigate().GoToUrl("http://localhost:64559/apply");
-
-            Assert.Equal("Credit Card Application - CreditCards", _driver.Title);
+            Assert.Equal("Credit Card Application - CreditCards", _applicationPage.Driver.Title);
         }
 
         [Fact]
         public void ShouldValidateApplicationDetails()
         {
-            _driver.Navigate().GoToUrl("http://localhost:64559/apply");
+            _applicationPage.EnterName("", "Smith");
+            _applicationPage.EnterFrequentFlyerNumber("012345-A");
+            _applicationPage.EnterAge("20");
+            _applicationPage.EnterGrossAnnualIncome("100000");
+            _applicationPage.SubmitApplication();
 
-            _driver.FindElement(By.Name("LastName")).SendKeys("Smith");
-            _driver.FindElement(By.Id("FrequentFlyerNumber")).SendKeys("012345-A");
-            _driver.FindElement(By.Id("Age")).SendKeys("18");
-            _driver.FindElement(By.Id("GrossAnnualIncome")).SendKeys("100000");
-            _driver.FindElement(By.Id("submitApplication")).Click();
-
-            Assert.Equal("Credit Card Application - CreditCards", _driver.Title);
-
-            var firstErrorMessage = _driver.FindElement(By.CssSelector(".validation-summary-errors ul > li"));
-
-            Assert.Equal("Please provide a first name", firstErrorMessage.Text);
+            Assert.Equal("Credit Card Application - CreditCards", _applicationPage.Driver.Title);
+            Assert.Equal("Please provide a first name", _applicationPage.FirstErrorMessage);
         }
 
         [Fact]
         public void ShouldDeclineLowIncomes()
         {
-            _driver.Navigate().GoToUrl("http://localhost:64559/apply");
+            _applicationPage.EnterName("Sarah", "Smith");
+            _applicationPage.EnterFrequentFlyerNumber("012345-A");
+            _applicationPage.EnterAge("35");
+            _applicationPage.EnterGrossAnnualIncome("10000");
+            var applicationCompletePage = _applicationPage.SubmitApplication();
 
-            _driver.FindElement(By.Name("FirstName")).SendKeys("Sarah");
-            _driver.FindElement(By.Name("LastName")).SendKeys("Smith");
-            _driver.FindElement(By.Id("FrequentFlyerNumber")).SendKeys("012345-A");
-            _driver.FindElement(By.Id("Age")).SendKeys("35");
-            _driver.FindElement(By.Id("GrossAnualIncome")).SendKeys("10000");
-            _driver.FindElement(By.Id("submitApplication")).Click();
-
-            Assert.Equal("Application Complete - CreditCards", _driver.Title);
+            Assert.Equal("Application Complete - CreditCards", applicationCompletePage.Driver.Title);
             var applicationDecision = _driver.FindElement(By.Id("decision"));
-            Assert.Equal("AutoDeclined", applicationDecision.Text);
+            Assert.Equal("AutoDeclined", applicationCompletePage.ApplicationDecision);
         }
     }
 }
