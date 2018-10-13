@@ -1,6 +1,6 @@
 # CreditCard-Test
 
-My personal training to learn more about different ways to test .NET Core. But instead, I am using .NET Core 2.0 here.
+My personal training to learn more about different ways to test .NET Core. But instead, I am using .NET Core 2.1 here.
 
 This project includes couple of approaches to implement certain feature.
 
