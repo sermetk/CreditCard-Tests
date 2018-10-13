@@ -71,7 +71,7 @@ namespace CreditCards.Integration.Test
 
             var antiForgeryCookieValue = SetCookieHeaderValue.Parse(antiForgeryCookie).Value;
 
-            return antiForgeryCookieValue;
+            return antiForgeryCookieValue.Value;
         }
 
         private string ExtractAntiForgeryToken(string htmlBody)
