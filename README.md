@@ -2,6 +2,8 @@
 
 My personal training to learn more about different ways to test .NET Core. But instead, I am using .NET Core 2.2 here.
 
+This will need to be updated to .NET Core 3.x.
+
 This project includes couple of approaches to implement certain feature.
 
 Please find below if you'd like to also learn more from the same course.<br />
