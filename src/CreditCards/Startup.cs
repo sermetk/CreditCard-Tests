@@ -1,57 +1,49 @@
-﻿using System;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using CreditCards.Infrastructure;
-using Microsoft.EntityFrameworkCore;
 using CreditCards.Core.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 
 namespace CreditCards
 {
     public class Startup
     {
-        private IConfiguration _configuration;
-        private IHostingEnvironment _environnment;
+        private IConfiguration _configuration { get; }
+        public IHostEnvironment _environment { get; }
 
-        public Startup(IConfiguration configuration, IHostingEnvironment environment)
+        public Startup(IConfiguration configuration, IHostEnvironment environment)
         {
             _configuration = configuration;
-            _environnment = environment;
+            _environment = environment;
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
-        public IServiceProvider ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
-            if (_environnment.IsDevelopment())
+            if (_environment.IsDevelopment())
             {
-                services.AddDbContext<AppDbContext>(
-                    options => options.UseInMemoryDatabase("TestingDatabase"));
+                services.AddDbContext<AppDbContext>(options => options.UseInMemoryDatabase(_configuration.GetConnectionString("TestingDatabase")));
             }
             else
             {
-                services.AddDbContext<AppDbContext>(
-                    options => options.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));
+                services.AddDbContext<AppDbContext>(options => options.UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));
             }
 
             services.AddScoped<ICreditCardApplicationRepository, EntityFrameworkCreditCardApplicationRepository>();
 
             services.AddMvc();
-
-            // Build the intermediate service provider then return it
-            return services.BuildServiceProvider();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IServiceProvider serviceProvider)
+        public void Configure(IApplicationBuilder app, AppDbContext dbContext)
         {
-            if (_environnment.IsDevelopment())
+            if (_environment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                //app.UseBrowserLink();
-
-                var dbContext = serviceProvider.GetService<AppDbContext>();
                 dbContext.Database.EnsureCreated();
             }
             else
@@ -61,11 +53,9 @@ namespace CreditCards
 
             app.UseStaticFiles();
 
-            app.UseMvc(routes =>
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }

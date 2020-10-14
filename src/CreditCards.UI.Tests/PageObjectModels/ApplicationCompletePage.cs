@@ -1,5 +1,4 @@
 ﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Support.PageObjects;
 
 namespace CreditCards.UI.Tests.PageObjectModels
 {
@@ -7,11 +6,8 @@ namespace CreditCards.UI.Tests.PageObjectModels
     {
         public IWebDriver Driver { get; }
 
-        [FindsBy(How = How.Id, Using = "fullName")]
-        private IWebElement _name;
-
-        [FindsBy(How = How.Id, Using = "decision")]
-        private IWebElement _decision;
+        public IWebElement _name => Driver.FindElement(By.Id("fullName"));
+        public IWebElement _decision => Driver.FindElement(By.Id("decision"));
 
         public string FullName => _name.Text;
 
@@ -20,7 +16,6 @@ namespace CreditCards.UI.Tests.PageObjectModels
         public ApplicationCompletePage(IWebDriver driver)
         {
             Driver = driver;
-            PageFactory.InitElements(driver, this);
         }
     }
 }

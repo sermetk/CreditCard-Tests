@@ -40,7 +40,7 @@ namespace CreditCards.Integration.Test
                 {
                     x.AddAntiforgery(t =>
                     {
-                        t.CookieName = AntiForgeryCookieName;
+                        t.Cookie.Name = AntiForgeryCookieName;
                         t.FormFieldName = AntiForgeryFieldName;
                     });
                 });

@@ -1,5 +1,4 @@
 ﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Support.PageObjects;
 using System;
 
 namespace CreditCards.UI.Tests.PageObjectModels
@@ -10,33 +9,25 @@ namespace CreditCards.UI.Tests.PageObjectModels
 
         private const string _pagePath = "apply";
 
-        [FindsBy(How = How.Name, Using = "FirstName")]
-        private IWebElement _firstName;
+        public IWebElement _firstName => Driver.FindElement(By.Name("FirstName"));
 
-        [FindsBy(How = How.Name, Using = "LastName")]
-        private IWebElement _lastName;
+        public IWebElement _lastName => Driver.FindElement(By.Name("LastName"));
 
-        [FindsBy(How = How.Id, Using = "FrequentFlyerNumber")]
-        private IWebElement _frequentFlyerNumber;
+        public IWebElement _frequentFlyerNumber => Driver.FindElement(By.Id("FrequentFlyerNumber"));
 
-        [FindsBy(How = How.Id, Using = "Age")]
-        private IWebElement _age;
+        public IWebElement _age => Driver.FindElement(By.Id("Age"));
 
-        [FindsBy(How = How.Id, Using = "GrossAnnualIncome")]
-        private IWebElement _grossAnnualIncome;
+        public IWebElement _grossAnnualIncome => Driver.FindElement(By.Id("GrossAnnualIncome"));
 
-        [FindsBy(How = How.Id, Using = "submitApplication")]
-        private IWebElement _applyButton;
+        public IWebElement _applyButton => Driver.FindElement(By.Id("submitApplication"));
 
-        [FindsBy(How = How.CssSelector, Using = ".validation-summary-errors ul > li")]
-        private IWebElement _firstError;
+        public IWebElement _firstError => Driver.FindElement(By.CssSelector(".validation-summary-errors ul > li"));
 
         public string FirstErrorMessage => _firstError.Text;
 
         public ApplicationPage(IWebDriver driver)
         {
             Driver = driver;
-            PageFactory.InitElements(driver, this);
         }
 
         public void NavigateTo()
